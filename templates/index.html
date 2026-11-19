@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phishing URL Detector</title>
+    <style>
+        body { font-family: sans-serif; }
+        .prediction { margin-top: 20px; font-weight: bold; }
+        .benign { color: green; }
+        .phishing { color: red; }
+        .features { margin-top: 20px; border: 1px solid #ccc; padding: 10px; }
+        .features h2 { margin-top: 0; }
+        .feature-list { list-style-type: none; padding: 0; }
+        .feature-list li { margin-bottom: 5px; }
+        .error { color: orange; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Phishing URL Detector</h1>
+    <form method="POST">
+        <label for="url">Enter URL:</label>
+        <input type="text" id="url" name="url" size="60" required>
+        <input type="submit" value="Check URL">
+    </form>
+
+    {% if prediction %}
+        <div class="prediction">
+            The predicted label is: <span class="{{ prediction|lower }}">{% if prediction == 'Phishing' %}PHISHING{% else %}BENIGN{% endif %}</span>
+        </div>
+    {% endif %}
+
+    {% if features %}
+        <div class="features">
+            <h2>Extracted Features:</h2>
+            <ul class="feature-list">
+                {% for key, value in features.items() %}
+                    <li><strong>{{ key }}:</strong> {{ value }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if prediction == "Model not loaded." %}
+        <div class="prediction error">{{ prediction }}</div>
+    {% endif %}
+</body>
+</html>
